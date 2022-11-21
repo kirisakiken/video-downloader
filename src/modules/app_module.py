@@ -15,15 +15,17 @@ class AppModule:
             raise KeyError(f'Key: {name} already exists in windows collection')
 
         window = QtWidgets.QMainWindow()
-        window_class = ui_class()
-        window_class.setupUi(window)
+        ui_class.setupUi(window)
         self.__windows[name] = window
-        self.__windows[name].show()
+        if show:
+            self.__windows[name].show()
 
     @property
     def app(self):
         return self.__app
 
-    @property
-    def windows(self) -> dict[str, QtWidgets.QMainWindow]:
-        return self.__windows
+    def get_window_by_name(self, window_name: str) -> QtWidgets.QMainWindow | None:
+        if self.__windows.get(window_name):
+            return self.__windows[window_name]
+
+        return None
